@@ -4,6 +4,8 @@ import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Model.OptionSpec;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ExtendedCliHelp extends CommandLine.Help {
@@ -28,7 +30,7 @@ public class ExtendedCliHelp extends CommandLine.Help {
                 optionColumnWidth
         );
         this.optionRenderer = new FormattingOptionRenderer(
-                createMinimalOptionRenderer(),
+                createTwoColumnOptionRenderer(),
                 descriptionColumnWidth,
                 helpFormatters
         );
@@ -42,6 +44,28 @@ public class ExtendedCliHelp extends CommandLine.Help {
                 optionRenderer,
                 createDefaultParameterRenderer()
         );
+    }
+
+    private IOptionRenderer createTwoColumnOptionRenderer() {
+        return (option, parameterLabelRenderer, scheme) -> {
+            List<Ansi.Text[]> result = new ArrayList<>();
+
+            String[] descriptions = option.description();
+
+            result.add(new Ansi.Text[]{
+                    scheme.optionText(OptionLabels.format(option)),
+                    scheme.text(descriptions.length == 0 ? "" : descriptions[0])
+            });
+
+            for (int index = 1; index < descriptions.length; index++) {
+                result.add(new Ansi.Text[]{
+                        scheme.text(""),
+                        scheme.text(descriptions[index])
+                });
+            }
+
+            return result.toArray(Ansi.Text[][]::new);
+        };
     }
 
     private static int calculateDescriptionColumnWidth(int usageWidth, int optionColumnWidth) {
