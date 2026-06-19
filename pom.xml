@@ -16,7 +16,7 @@
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <organization>oberon-oss</organization>
         <argLine/>  <!--make sure a argLine variable at least EXISTS!-->
     </properties>
 
@@ -52,6 +52,37 @@
         </repository>
     </repositories>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>TigerLilly64</id>
+            <name>TigerLilly64</name>
+            <email>info@oberon-oss.eu</email>
+            <organization>Oberon OSS</organization>
+            <organizationUrl>https://github.com/${organization}</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/${organization}/picocli-option-help.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/${organization}/picocli-option-help.git</developerConnection>
+        <url>https://github.com/${organization}/picocli-option-help</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>central</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
 
 
