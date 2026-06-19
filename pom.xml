@@ -17,7 +17,6 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <organization>oberon-oss</organization>
-        <argLine>--sun-misc-unsafe-memory-access=allow</argLine>
         <lombok.version>1.18.46</lombok.version>
     </properties>
 
@@ -84,6 +83,17 @@
             <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>@{argLine} --sun-misc-unsafe-memory-access=allow</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
 
 
