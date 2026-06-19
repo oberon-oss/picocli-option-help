@@ -17,7 +17,8 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <organization>oberon-oss</organization>
-        <argLine/>  <!--make sure a argLine variable at least EXISTS!-->
+        <argLine>--sun-misc-unsafe-memory-access=allow</argLine>
+        <lombok.version>1.18.46</lombok.version>
     </properties>
 
     <dependencies>
