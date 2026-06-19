@@ -26,6 +26,7 @@ jobs:
 
       - name: Publish package
         env:
+          MAVEN_OPTS: --sun-misc-unsafe-memory-access=allow
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
