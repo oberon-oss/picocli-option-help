@@ -76,6 +76,7 @@ class ExtendedCliHelpTest {
         assertFalse(usage.contains("--this-is-a-hidden-option-with-a-very-long-name"));
     }
 
+    @SuppressWarnings("unused")
     @CommandLine.Command(
             name = "demo",
             description = "Demo command",
@@ -116,6 +117,7 @@ class ExtendedCliHelpTest {
             // required
         }
 
+        @SuppressWarnings("ClassEscapesDefinedScope")
         @Override
         public List<OptionValue<OutputFormat>> values() {
             return List.of(

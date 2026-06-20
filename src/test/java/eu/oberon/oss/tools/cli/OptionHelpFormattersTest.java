@@ -7,11 +7,7 @@ import picocli.CommandLine.Model.CommandSpec;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class OptionHelpFormattersTest {
 
@@ -93,6 +89,7 @@ class OptionHelpFormattersTest {
             // required
         }
 
+        @SuppressWarnings("ClassEscapesDefinedScope")
         @Override
         public List<OptionValue<OutputFormat>> values() {
             return List.of(
@@ -124,6 +121,7 @@ class OptionHelpFormattersTest {
 
     private static final class CommandWithoutAnnotatedOption {
 
+        @SuppressWarnings("unused")
         @CommandLine.Option(names = "--verbose")
         boolean verbose;
     }
