@@ -31,4 +31,4 @@ jobs:
                     CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
                     GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
                     MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-                run: mvn -B -DskipTests deploy -P central-release,generate-javadoc-and-source
+                run: mvn -B deploy -P central-release,generate-javadoc-and-source

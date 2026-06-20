@@ -55,9 +55,20 @@ jobs:
                     server-username: CENTRAL_USERNAME
                     server-password: CENTRAL_PASSWORD
 
+            -   name: Read Maven project version
+                id: project-version
+                run: |
+                    VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+                    echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
             -   name: Publish SNAPSHOT
+                if: endsWith(steps.project-version.outputs.version, '-SNAPSHOT')
                 env:
                     MAVEN_OPTS: --sun-misc-unsafe-memory-access=allow
                     CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
                     CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
                 run: mvn -B -DskipTests deploy -Pgenerate-javadoc-and-source
+
+            -   name: Skip SNAPSHOT publishing
+                if: ${{ !endsWith(steps.project-version.outputs.version, '-SNAPSHOT') }}
+                run: echo "Project version '${{ steps.project-version.outputs.version }}' is not a SNAPSHOT version. Skipping snapshot deployment."
