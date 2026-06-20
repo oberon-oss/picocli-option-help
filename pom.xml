@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <organization>oberon-oss</organization>
         <lombok.version>1.18.46</lombok.version>
-
+        <argLine/>
         <sonar.organization>oberon-oss-eu</sonar.organization>
     </properties>
 
