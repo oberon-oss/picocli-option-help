@@ -54,6 +54,8 @@
         </repository>
     </repositories>
 
+    <name>A uility library that can be used to list allowed values for commandline options that have a limited set of allowed values</name>
+
     <licenses>
         <license>
             <name>MIT License</name>
