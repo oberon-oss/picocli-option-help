@@ -69,20 +69,33 @@ public class MyApp {
 
 When creating your `CommandLine` instance, use `ExtendedCliHelp` to render the usage message.
 
-```java
-CommandLine cmd = new CommandLine(new MyApp());
-CommandSpec spec = cmd.getCommandSpec();
+```java 
+import eu.oberon.oss.tools.cli.ExtendedCliHelp; 
+import eu.oberon.oss.tools.cli.HelpFormatter; 
+import eu.oberon.oss.tools.cli.OptionHelpFormatters; 
+import picocli.CommandLine.Help; 
+import picocli.CommandLine.Model.CommandSpec;
+import java.util.Map;
 
-// Create the extended help instance
-ExtendedCliHelp help = new ExtendedCliHelp(
-    spec,
-    cmd.getColorScheme(),
-    OptionHelpFormatters.from(spec)
-);
+public final class HelpExample {
+private HelpExample() {
+}
 
-// Use it to print help
-System.out.println(help.fullSynopsis());
-System.out.println(help.optionList());
+public static String usage(Object command) {
+    CommandSpec spec = CommandSpec.forAnnotatedObject(command);
+    Map<String, HelpFormatter> formatters = OptionHelpFormatters.from(spec);
+
+    Help help = new ExtendedCliHelp(
+            spec,
+            Help.defaultColorScheme(Help.Ansi.AUTO),
+            formatters
+    );
+
+    return help.fullSynopsis()
+            + System.lineSeparator()
+            + help.optionList();
+    }
+}
 ```
 
 ### Examples
@@ -218,7 +231,7 @@ Use standard Maven commands:
 
 ## Environment Variables
 
-- No specific environment variables required for this library.
+- No specific environment variables are required for this library.
 
 ## License
 
