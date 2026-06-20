@@ -87,9 +87,10 @@ class OptionHelpFormattersTest {
         XML
     }
 
-    private static final class FormatValuesProvider implements OptionValuesProvider<OutputFormat> {
+    public static final class FormatValuesProvider implements OptionValuesProvider<OutputFormat> {
 
-        private FormatValuesProvider() {
+        public FormatValuesProvider() {
+            // required
         }
 
         @Override
