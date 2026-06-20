@@ -60,4 +60,4 @@ jobs:
                     MAVEN_OPTS: --sun-misc-unsafe-memory-access=allow
                     CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
                     CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
-                run: mvn -B -DskipTests deploy
+                run: mvn -B -DskipTests deploy -Pgenerate-javadoc-and-source
