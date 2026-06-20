@@ -69,7 +69,7 @@ public class ExtendedCliHelp extends CommandLine.Help {
      * @since 1.0.0
      */
     private IOptionRenderer createTwoColumnOptionRenderer() {
-        return (option, parameterLabelRenderer, scheme) -> {
+        return (option, _, scheme) -> {
             List<Ansi.Text[]> result = new ArrayList<>();
 
             String[] descriptions = option.description();
