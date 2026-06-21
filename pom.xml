@@ -11,6 +11,9 @@
 
     <artifactId>picocli-option-help</artifactId>
     <version>1.0.0</version>
+    <name>picocli-option-help</name>
+    <description>Extended picocli help rendering for options with documented valid values.</description>
+    <url>https://github.com/oberon-oss/picocli-option-help</url>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -54,8 +57,6 @@
         </repository>
     </repositories>
 
-    <name>A uility library that can be used to list allowed values for commandline options that have a limited set of allowed values</name>
-
     <licenses>
         <license>
             <name>MIT License</name>
@@ -63,6 +64,11 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <organization>
+        <name>Oberon OSS</name>
+        <url>https://github.com/${organization}</url>
+    </organization>
 
     <developers>
         <developer>

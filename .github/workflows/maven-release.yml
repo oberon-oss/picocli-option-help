@@ -2,33 +2,17 @@ name: Publish package to Maven Central
 
 on:
     release:
-        types: [ created ]
+        types:
+            - created
 
 jobs:
-    publish:
-        runs-on: ubuntu-latest
-
-        permissions:
-            contents: read
-
-        steps:
-            -   uses: actions/checkout@v4
-
-            -   uses: actions/setup-java@v4
-                with:
-                    java-version: '25'
-                    distribution: 'temurin'
-                    server-id: central
-                    server-username: CENTRAL_USERNAME
-                    server-password: CENTRAL_PASSWORD
-                    gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-                    gpg-passphrase: GPG_PASSPHRASE
-
-            -   name: Publish package
-                env:
-                    MAVEN_OPTS: --sun-misc-unsafe-memory-access=allow
-                    CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
-                    CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
-                    GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-                    MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-                run: mvn -B deploy -P central-release,generate-javadoc-and-source
+    release:
+        uses: oberon-oss/github-workflows/.github/workflows/maven-release.yml@ab7ee56472759e7dfd183b7572567cb57ee41a4d
+        with:
+            java-version: '25'
+            release-maven-profiles: central-release,generate-javadoc-and-source
+        secrets:
+            CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+            CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+            GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+            GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
