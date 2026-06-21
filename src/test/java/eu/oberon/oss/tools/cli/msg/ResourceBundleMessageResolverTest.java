@@ -45,7 +45,7 @@ class ResourceBundleMessageResolverTest {
     @Test
     void shouldResolveWithCustomFormatter() {
         MessageResolver resolver = new ResourceBundleMessageResolver("test-messages", Locale.ENGLISH);
-        MessageFormatter customFormatter = (pattern, locale, arguments) -> "PREFIX: " + pattern + " [" + arguments[0] + "]";
+        MessageFormatter customFormatter = (pattern, _, arguments) -> "PREFIX: " + pattern + " [" + arguments[0] + "]";
 
         assertEquals("PREFIX: Hello, {0}! [World]", resolver.resolve("hello", customFormatter, "World"));
     }
@@ -90,6 +90,7 @@ class ResourceBundleMessageResolverTest {
     void shouldThrowExceptionWhenFormatterIsNull() {
         MessageResolver resolver = new ResourceBundleMessageResolver("test-messages", Locale.ENGLISH);
 
+        //noinspection DataFlowIssue
         org.junit.jupiter.api.Assertions.assertThrows(
                 NullPointerException.class,
                 () -> resolver.resolve("simple", null, "arg")
@@ -114,6 +115,7 @@ class ResourceBundleMessageResolverTest {
 
     @Test
     void shouldThrowExceptionWhenResourceBundleIsNull() {
+        //noinspection DataFlowIssue
         org.junit.jupiter.api.Assertions.assertThrows(
                 NullPointerException.class,
                 () -> new ResourceBundleMessageResolver(null)
