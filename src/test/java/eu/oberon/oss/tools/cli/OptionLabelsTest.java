@@ -41,6 +41,7 @@ class OptionLabelsTest {
 
         assertEquals("--format=PARAM", result);
     }
+
     @Test
     void shouldFormatSingleNameOption() {
         OptionSpec option = OptionSpec.builder("--format")

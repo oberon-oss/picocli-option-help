@@ -28,10 +28,6 @@ public final class OptionLabels {
             return optionNames;
         }
 
-        if (option.paramLabel() == null || option.paramLabel().isBlank()) {
-            return optionNames;
-        }
-
         return optionNames + "=" + option.paramLabel();
     }
 

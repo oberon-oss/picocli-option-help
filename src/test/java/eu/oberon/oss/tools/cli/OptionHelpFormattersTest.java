@@ -22,7 +22,7 @@ class OptionHelpFormattersTest {
         HelpFormatter formatter = formatters.get("--format");
         List<String> lines = formatter.format(80);
 
-        assertTrue(lines.contains("  Valid values:"));
+        assertTrue(lines.contains("Allowed values:"));
         assertTrue(lines.contains("   text : Plain text"));
         assertTrue(lines.contains("   json : JSON document"));
         assertTrue(lines.contains("   xml  : XML document"));

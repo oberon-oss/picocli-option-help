@@ -15,6 +15,7 @@ Picocli Option Help is a Java library designed to enhance [picocli](https://pico
 - **Detailed Descriptions**: Add descriptions for each valid value.
 - **Enhanced Usage Help**: Automatically integrate these listings into picocli's standard help output.
 - **Flexible Formatting**: Configure indentation, headings, and separators for value listings.
+- **Internationalization (i18n)**: Support for localized messages and headings using resource bundles.
 
 ## Requirements
 
@@ -213,12 +214,59 @@ Rendered help:
                       8080 : Alternative HTTP port
 ```
 
+### Internationalization (i18n)
+
+The library provides support for localizing messages and headings using the `MessageResolver` interface.
+
+#### 1. Using ResourceBundleMessageResolver
+
+You can use the built-in `ResourceBundleMessageResolver` to resolve messages from a `ResourceBundle`.
+
+```java
+MessageResolver resolver = new ResourceBundleMessageResolver("my-messages", Locale.ENGLISH);
+String heading = resolver.resolve("my.heading.key");
+String description = resolver.resolve("my.value.description.key", "OptionalArgument");
+```
+
+#### 2. Localizing Option Headings
+
+By default, the `@OptionValueHelp` annotation uses a message key `eu.oberon.oss.tools.cli.option.values.heading` for its heading. This key is automatically resolved if you don't provide a custom heading.
+
+```java
+@OptionValueHelp(valuesProvider = MyProvider.class) // Uses default localized heading
+```
+
+To provide your own localized heading, you can resolve it before passing it to the annotation if it's constant, or more dynamically when building your `HelpFormatter`.
+
+#### 3. Localizing Value Descriptions in Providers
+
+You can use a `MessageResolver` inside your `OptionValuesProvider` to return localized descriptions.
+
+```java
+public class LocalizedProvider implements OptionValuesProvider<String> {
+    private final MessageResolver resolver;
+
+    public LocalizedProvider(MessageResolver resolver) {
+        this.resolver = resolver;
+    }
+
+    @Override
+    public List<OptionValue<String>> values() {
+        return List.of(
+            new OptionValue<>("v1", "v1", resolver.resolve("value.v1.description"))
+        );
+    }
+}
+```
+
 ## Project Structure
 
 - `src/main/java`: Core logic and annotations.
     - `eu.oberon.oss.tools.cli.ExtendedCliHelp`: The main class for generating extended help.
     - `eu.oberon.oss.tools.cli.OptionValueHelp`: Annotation for options.
     - `eu.oberon.oss.tools.cli.OptionValuesProvider`: Interface for value providers.
+    - `eu.oberon.oss.tools.cli.msg.MessageResolver`: Interface for message resolution.
+    - `eu.oberon.oss.tools.cli.msg.ResourceBundleMessageResolver`: Implementation using resource bundles.
 - `src/test/java`: Unit tests and usage examples.
 
 ## Scripts
