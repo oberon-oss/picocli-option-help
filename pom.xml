@@ -24,7 +24,7 @@
         <lombok.version>1.18.46</lombok.version>
         <argLine></argLine>
 
-        <sonar.projectKey>oberon-oss-picocli-option-help</sonar.projectKey>
+        <sonar.projectKey>eu.oberon-oss:picocli-option-help</sonar.projectKey>
     </properties>
 
     <dependencies>
