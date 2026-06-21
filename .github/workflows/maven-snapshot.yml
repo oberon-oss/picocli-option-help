@@ -15,7 +15,7 @@ on:
 
 jobs:
     snapshot:
-        uses: oberon-oss/github-workflows/.github/workflows/maven-snapshot.yml@ab7ee56472759e7dfd183b7572567cb57ee41a4d
+        uses: oberon-oss/github-workflows/.github/workflows/maven-snapshot.yml@e2d11bf171adf6ba14145f7f3644de1dfe52e6ae
         with:
             java-version: '25'
             snapshot-branch: master
