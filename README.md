@@ -234,6 +234,7 @@ By default, the `@OptionValueHelp` annotation uses a message key `eu.oberon.oss.
 
 ```java
 @OptionValueHelp(valuesProvider = MyProvider.class) // Uses default localized heading
+private String someValue;
 ```
 
 To provide your own localized heading, you can resolve it before passing it to the annotation if it's constant, or more dynamically when building your `HelpFormatter`.
