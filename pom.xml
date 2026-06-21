@@ -10,7 +10,8 @@
     </parent>
 
     <artifactId>picocli-option-help</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-SNAPSHOT</version>
+
     <name>picocli-option-help</name>
     <description>Extended picocli help rendering for options with documented valid values.</description>
     <url>https://github.com/oberon-oss/picocli-option-help</url>
