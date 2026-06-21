@@ -23,7 +23,8 @@
         <organization>oberon-oss</organization>
         <lombok.version>1.18.46</lombok.version>
         <argLine></argLine>
-        <sonar.organization>oberon-oss-eu</sonar.organization>
+
+        <sonar.projectKey>oberon-oss-picocli-option-help</sonar.projectKey>
     </properties>
 
     <dependencies>
