@@ -15,11 +15,11 @@ on:
 
 jobs:
     snapshot:
-        uses: oberon-oss/github-workflows/.github/workflows/maven-snapshot.yml@4324721ed912cb901f1d93d6c000779b89ee0dcc
+        uses: oberon-oss/github-workflows/.github/workflows/maven-snapshot.yml@bfb7933679c71bfc7387eac51784d2484706cdfd
         with:
             java-version: '25'
             snapshot-branch: master
-            sonar-enabled: true
+            sonar-enabled: ${{ github.ref == 'refs/heads/master' || github.event_name == 'pull_request' }}
             sonar-maven-profile: coverage
             snapshot-maven-profiles: generate-javadoc-and-source
             sonar-project-key: eu.oberon-oss:picocli-option-help
