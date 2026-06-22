@@ -34,7 +34,7 @@ Add the library to your Maven project:
 <dependency>
     <groupId>eu.oberon-oss</groupId>
     <artifactId>picocli-option-help</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>[required-version-goes-here]</version>
 </dependency>
 ```
 
