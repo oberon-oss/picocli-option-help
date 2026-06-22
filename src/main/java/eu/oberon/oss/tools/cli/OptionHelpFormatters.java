@@ -95,7 +95,10 @@ public final class OptionHelpFormatters {
             return constructor.newInstance();
         } catch (ReflectiveOperationException exception) {
             throw new IllegalArgumentException(
-                    "Could not instantiate option values provider: " + providerType.getName(),
+                    MESSAGE_RESOLVER.resolve(
+                            "eu.oberon.oss.tools.cli.option.exc.failed.to.instantiate.for.provider.name",
+                            providerType.getName()
+                    ),
                     exception
             );
         }
