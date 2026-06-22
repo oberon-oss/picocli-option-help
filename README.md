@@ -17,6 +17,7 @@ Picocli Option Help is a Java library designed to enhance [picocli](https://pico
 - **Detailed Descriptions**: Add descriptions for each valid value.
 - **Enhanced Usage Help**: Automatically integrate these listings into picocli's standard help output.
 - **Flexible Formatting**: Configure indentation, headings, and separators for value listings.
+- **Option Value Conversion**: Ensure accepted command-line values match the customized help descriptions.
 - **Internationalization (i18n)**: Support for localized messages and headings using resource bundles.
 
 ## Requirements
@@ -72,31 +73,53 @@ public class MyApp {
 
 When creating your `CommandLine` instance, use `ExtendedCliHelp` to render the usage message.
 
-```java 
-import eu.oberon.oss.tools.cli.ExtendedCliHelp; 
-import eu.oberon.oss.tools.cli.HelpFormatter; 
-import eu.oberon.oss.tools.cli.OptionHelpFormatters; 
-import picocli.CommandLine.Help; 
+```java
+import eu.oberon.oss.tools.cli.ExtendedCliHelp;
+import eu.oberon.oss.tools.cli.HelpFormatter;
+import eu.oberon.oss.tools.cli.OptionHelpFormatters;
+import picocli.CommandLine.Help;
 import picocli.CommandLine.Model.CommandSpec;
 import java.util.Map;
 
 public final class HelpExample {
-private HelpExample() {
+    private HelpExample() {
+    }
+
+    public static String usage(Object command) {
+        CommandSpec spec = CommandSpec.forAnnotatedObject(command);
+        Map<String, HelpFormatter> formatters = OptionHelpFormatters.from(spec);
+
+        Help help = new ExtendedCliHelp(
+                spec,
+                Help.defaultColorScheme(Help.Ansi.AUTO),
+                formatters
+        );
+
+        return help.fullSynopsis()
+                + System.lineSeparator()
+                + help.optionList();
+    }
 }
+```
 
-public static String usage(Object command) {
-    CommandSpec spec = CommandSpec.forAnnotatedObject(command);
-    Map<String, HelpFormatter> formatters = OptionHelpFormatters.from(spec);
+### 4. Option Value Conversion
 
-    Help help = new ExtendedCliHelp(
-            spec,
-            Help.defaultColorScheme(Help.Ansi.AUTO),
-            formatters
-    );
+By default, picocli might not recognize the custom names defined in your `OptionValuesProvider` (for example, if you use lowercase or kebab-case for enums). You can use `OptionValueConverter` to ensure that picocli accepts exactly the values shown in the help.
 
-    return help.fullSynopsis()
-            + System.lineSeparator()
-            + help.optionList();
+```java
+import eu.oberon.oss.tools.cli.OptionValueConverter;
+import picocli.CommandLine;
+
+public final class ConversionExample {
+    public static void main(String[] args) {
+        CommandLine commandLine = new CommandLine(new MyApp());
+
+        commandLine.registerConverter(
+            ExecutionMode.class,
+            new OptionValueConverter<>(new KebabModeProvider())
+        );
+
+        commandLine.execute(args);
     }
 }
 ```
@@ -268,6 +291,7 @@ public class LocalizedProvider implements OptionValuesProvider<String> {
     - `eu.oberon.oss.tools.cli.ExtendedCliHelp`: The main class for generating extended help.
     - `eu.oberon.oss.tools.cli.OptionValueHelp`: Annotation for options.
     - `eu.oberon.oss.tools.cli.OptionValuesProvider`: Interface for value providers.
+    - `eu.oberon.oss.tools.cli.OptionValueConverter`: A Picocli converter that uses an `OptionValuesProvider`.
     - `eu.oberon.oss.tools.cli.msg.MessageResolver`: Interface for message resolution.
     - `eu.oberon.oss.tools.cli.msg.ResourceBundleMessageResolver`: Implementation using resource bundles.
 - `src/test/java`: Unit tests and usage examples.
