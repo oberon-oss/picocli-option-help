@@ -6,7 +6,6 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=oberon-oss_picocli-option-help&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=oberon-oss_picocli-option-help)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=oberon-oss_picocli-option-help&metric=bugs)](https://sonarcloud.io/summary/new_code?id=oberon-oss_picocli-option-help)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=oberon-oss_picocli-option-help&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=oberon-oss_picocli-option-help)
-[![MvnRepository](https://badges.mvnrepository.com/badge/eu.oberon-oss/picocli-option-help/badge.svg?label=MvnRepository)](https://mvnrepository.com/artifact/eu.oberon-oss/picocli-option-help)
 
 
 Picocli Option Help is a Java library designed to enhance [picocli](https://picocli.info/) by providing detailed listings of valid values for command-line options. It allows developers to specify custom providers for option values and descriptions, which are then rendered as part of the command's usage help.
@@ -17,6 +16,8 @@ Picocli Option Help is a Java library designed to enhance [picocli](https://pico
 - **Detailed Descriptions**: Add descriptions for each valid value.
 - **Enhanced Usage Help**: Automatically integrate these listings into picocli's standard help output.
 - **Flexible Formatting**: Configure indentation, headings, and separators for value listings.
+- **Option Value Conversion**: Ensure accepted command-line values match the customized help descriptions.
+- **Internationalization (i18n)**: Support for localized messages and headings using resource bundles.
 
 ## Requirements
 
@@ -26,15 +27,8 @@ Picocli Option Help is a Java library designed to enhance [picocli](https://pico
 
 ## Setup
 
-Add the library to your Maven project:
-
-```xml
-<dependency>
-    <groupId>eu.oberon-oss</groupId>
-    <artifactId>picocli-option-help</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-</dependency>
-```
+Add the library to your Maven project: 
+[![MvnRepository](https://badges.mvnrepository.com/badge/eu.oberon-oss/picocli-option-help/badge.svg?label=MvnRepository)](https://mvnrepository.com/artifact/eu.oberon-oss/picocli-option-help)
 
 ## Usage
 
@@ -71,31 +65,53 @@ public class MyApp {
 
 When creating your `CommandLine` instance, use `ExtendedCliHelp` to render the usage message.
 
-```java 
-import eu.oberon.oss.tools.cli.ExtendedCliHelp; 
-import eu.oberon.oss.tools.cli.HelpFormatter; 
-import eu.oberon.oss.tools.cli.OptionHelpFormatters; 
-import picocli.CommandLine.Help; 
+```java
+import eu.oberon.oss.tools.cli.ExtendedCliHelp;
+import eu.oberon.oss.tools.cli.HelpFormatter;
+import eu.oberon.oss.tools.cli.OptionHelpFormatters;
+import picocli.CommandLine.Help;
 import picocli.CommandLine.Model.CommandSpec;
 import java.util.Map;
 
 public final class HelpExample {
-private HelpExample() {
+    private HelpExample() {
+    }
+
+    public static String usage(Object command) {
+        CommandSpec spec = CommandSpec.forAnnotatedObject(command);
+        Map<String, HelpFormatter> formatters = OptionHelpFormatters.from(spec);
+
+        Help help = new ExtendedCliHelp(
+                spec,
+                Help.defaultColorScheme(Help.Ansi.AUTO),
+                formatters
+        );
+
+        return help.fullSynopsis()
+                + System.lineSeparator()
+                + help.optionList();
+    }
 }
+```
 
-public static String usage(Object command) {
-    CommandSpec spec = CommandSpec.forAnnotatedObject(command);
-    Map<String, HelpFormatter> formatters = OptionHelpFormatters.from(spec);
+### 4. Option Value Conversion
 
-    Help help = new ExtendedCliHelp(
-            spec,
-            Help.defaultColorScheme(Help.Ansi.AUTO),
-            formatters
-    );
+By default, picocli might not recognize the custom names defined in your `OptionValuesProvider` (for example, if you use lowercase or kebab-case for enums). You can use `OptionValueConverter` to ensure that picocli accepts exactly the values shown in the help.
 
-    return help.fullSynopsis()
-            + System.lineSeparator()
-            + help.optionList();
+```java
+import eu.oberon.oss.tools.cli.OptionValueConverter;
+import picocli.CommandLine;
+
+public final class ConversionExample {
+    public static void main(String[] args) {
+        CommandLine commandLine = new CommandLine(new MyApp());
+
+        commandLine.registerConverter(
+            ExecutionMode.class,
+            new OptionValueConverter<>(new KebabModeProvider())
+        );
+
+        commandLine.execute(args);
     }
 }
 ```
@@ -215,12 +231,61 @@ Rendered help:
                       8080 : Alternative HTTP port
 ```
 
+### Internationalization (i18n)
+
+The library provides support for localizing messages and headings using the `MessageResolver` interface.
+
+#### 1. Using ResourceBundleMessageResolver
+
+You can use the built-in `ResourceBundleMessageResolver` to resolve messages from a `ResourceBundle`.
+
+```java
+MessageResolver resolver = new ResourceBundleMessageResolver("my-messages", Locale.ENGLISH);
+String heading = resolver.resolve("my.heading.key");
+String description = resolver.resolve("my.value.description.key", "OptionalArgument");
+```
+
+#### 2. Localizing Option Headings
+
+By default, the `@OptionValueHelp` annotation uses a message key `eu.oberon.oss.tools.cli.option.values.heading` for its heading. This key is automatically resolved if you don't provide a custom heading.
+
+```java
+@OptionValueHelp(valuesProvider = MyProvider.class) // Uses default localized heading
+private String someValue;
+```
+
+To provide your own localized heading, you can resolve it before passing it to the annotation if it's constant, or more dynamically when building your `HelpFormatter`.
+
+#### 3. Localizing Value Descriptions in Providers
+
+You can use a `MessageResolver` inside your `OptionValuesProvider` to return localized descriptions.
+
+```java
+public class LocalizedProvider implements OptionValuesProvider<String> {
+    private final MessageResolver resolver;
+
+    public LocalizedProvider(MessageResolver resolver) {
+        this.resolver = resolver;
+    }
+
+    @Override
+    public List<OptionValue<String>> values() {
+        return List.of(
+            new OptionValue<>("v1", "v1", resolver.resolve("value.v1.description"))
+        );
+    }
+}
+```
+
 ## Project Structure
 
 - `src/main/java`: Core logic and annotations.
     - `eu.oberon.oss.tools.cli.ExtendedCliHelp`: The main class for generating extended help.
     - `eu.oberon.oss.tools.cli.OptionValueHelp`: Annotation for options.
     - `eu.oberon.oss.tools.cli.OptionValuesProvider`: Interface for value providers.
+    - `eu.oberon.oss.tools.cli.OptionValueConverter`: A Picocli converter that uses an `OptionValuesProvider`.
+    - `eu.oberon.oss.tools.cli.msg.MessageResolver`: Interface for message resolution.
+    - `eu.oberon.oss.tools.cli.msg.ResourceBundleMessageResolver`: Implementation using resource bundles.
 - `src/test/java`: Unit tests and usage examples.
 
 ## Scripts

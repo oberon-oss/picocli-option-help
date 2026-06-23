@@ -1,9 +1,12 @@
 package eu.oberon.oss.tools.cli;
 
+import eu.oberon.oss.tools.cli.msg.MessageResolver;
+import eu.oberon.oss.tools.cli.msg.ResourceBundleMessageResolver;
 import picocli.CommandLine.Model.CommandSpec;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -14,6 +17,10 @@ import java.util.stream.Collectors;
  * @since 1.0.0
  */
 public final class OptionHelpFormatters {
+    private static final String MESSAGE_BUNDLE_NAME = "eu.oberon.oss.tools.cli.message";
+    private static final String DEFAULT_HEADING_KEY = "eu.oberon.oss.tools.cli.option.values.heading";
+    private static final MessageResolver MESSAGE_RESOLVER = new ResourceBundleMessageResolver(MESSAGE_BUNDLE_NAME, Locale.getDefault());
+
 
     // Final class should NOT be extended.
     private OptionHelpFormatters() {
@@ -54,15 +61,24 @@ public final class OptionHelpFormatters {
                 provider.values(),
                 OptionValue::name,
                 OptionValue::description,
-                optionValueHelp.heading(),
+                heading(optionValueHelp),
                 optionValueHelp.indent(),
                 optionValueHelp.separator()
         );
     }
 
+    private static String heading(OptionValueHelp optionValueHelp) {
+        String heading = optionValueHelp.heading();
+
+        if (DEFAULT_HEADING_KEY.equals(heading)) {
+            return MESSAGE_RESOLVER.resolve(heading);
+        }
+
+        return heading;
+    }
+
     /**
-     * Instantiates an option values provider.
-     * Note: the option values provider must have a <b>public</b> no-argument constructor.
+     * Instantiates an option values provider. Note: the option values provider must have a <b>public</b> no-argument constructor.
      *
      * @param providerType the option values provider type
      *
@@ -73,12 +89,16 @@ public final class OptionHelpFormatters {
     private static OptionValuesProvider<?> instantiate(
             Class<? extends OptionValuesProvider<?>> providerType
     ) {
+
         try {
             Constructor<? extends OptionValuesProvider<?>> constructor = providerType.getConstructor();
             return constructor.newInstance();
         } catch (ReflectiveOperationException exception) {
             throw new IllegalArgumentException(
-                    "Could not instantiate option values provider: " + providerType.getName(),
+                    MESSAGE_RESOLVER.resolve(
+                            "eu.oberon.oss.tools.cli.option.exc.failed.to.instantiate.for.provider.name",
+                            providerType.getName()
+                    ),
                     exception
             );
         }

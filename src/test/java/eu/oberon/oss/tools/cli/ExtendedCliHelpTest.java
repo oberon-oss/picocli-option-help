@@ -30,7 +30,7 @@ class ExtendedCliHelpTest {
 
         assertTrue(usage.contains("--format=FORMAT"));
         assertTrue(usage.contains("Output format."));
-        assertTrue(usage.contains("  Valid values:"));
+        assertTrue(usage.contains("Allowed values:"));
         assertTrue(usage.contains("text"));
         assertTrue(usage.contains("Plain text"));
         assertTrue(usage.contains("json"));
@@ -75,6 +75,42 @@ class ExtendedCliHelpTest {
 
         assertFalse(usage.contains("--this-is-a-hidden-option-with-a-very-long-name"));
     }
+
+    @Test
+    void usageHelpShouldRenderMultipleDescriptionLinesForNormalOptions() {
+        CommandSpec spec = CommandSpec.forAnnotatedObject(new CommandWithMultilineDescription());
+        Map<String, HelpFormatter> formatters = OptionHelpFormatters.from(spec);
+
+        Help help = new ExtendedCliHelp(
+                spec,
+                Help.defaultColorScheme(Help.Ansi.OFF),
+                formatters
+        );
+
+        String usage = help.fullSynopsis()
+                + System.lineSeparator()
+                + help.optionList();
+
+        assertTrue(usage.contains("--output=FILE"));
+        assertTrue(usage.contains("Write output to FILE."));
+        assertTrue(usage.contains("Use '-' to write to standard output."));
+    }
+
+    @SuppressWarnings("unused")
+    @CommandLine.Command(name = "multiline")
+    private static final class CommandWithMultilineDescription {
+
+        @CommandLine.Option(
+                names = "--output",
+                paramLabel = "FILE",
+                description = {
+                        "Write output to FILE.",
+                        "Use '-' to write to standard output."
+                }
+        )
+        String output;
+    }
+
 
     @SuppressWarnings("unused")
     @CommandLine.Command(

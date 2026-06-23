@@ -31,7 +31,7 @@ public @interface OptionValueHelp {
      *
      * @since 1.0.0
      */
-    String heading() default "  Valid values:";
+    String heading() default "eu.oberon.oss.tools.cli.option.values.heading";
 
     /**
      * Specifies the indentation for the option values.

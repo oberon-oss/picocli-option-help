@@ -12,19 +12,20 @@
     <artifactId>picocli-option-help</artifactId>
     <version>1.1.0-SNAPSHOT</version>
 
+    <properties>
+        <github.project.name>picocli-option-help</github.project.name>
+    </properties>
+
     <name>picocli-option-help</name>
     <description>Extended picocli help rendering for options with documented valid values.</description>
-    <url>https://github.com/oberon-oss/picocli-option-help</url>
+    <url>https://github.com/${github-organization-name}/${github.project.name}</url>
 
-    <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <organization>oberon-oss</organization>
-        <lombok.version>1.18.46</lombok.version>
-        <argLine></argLine>
-        <sonar.organization>oberon-oss-eu</sonar.organization>
-    </properties>
+    <scm>
+        <connection>scm:git:https://github.com/${github-organization-name}/${github.project.name}.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/${github-organization-name}/${github.project.name}.git</developerConnection>
+        <url>https://github.com/${github-organization-name}/${github.project.name}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -58,53 +59,6 @@
         </repository>
     </repositories>
 
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>https://opensource.org/licenses/MIT</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <organization>
-        <name>Oberon OSS</name>
-        <url>https://github.com/${organization}</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>TigerLilly64</id>
-            <name>TigerLilly64</name>
-            <email>info@oberon-oss.eu</email>
-            <organization>Oberon OSS</organization>
-            <organizationUrl>https://github.com/${organization}</organizationUrl>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:https://github.com/${organization}/picocli-option-help.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/${organization}/picocli-option-help.git</developerConnection>
-        <url>https://github.com/${organization}/picocli-option-help</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>central</id>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>@{argLine} --sun-misc-unsafe-memory-access=allow</argLine>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
 
 
