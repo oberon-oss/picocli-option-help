@@ -11,6 +11,7 @@ jobs:
         with:
             java-version: '25'
             release-maven-profiles: central-release,generate-javadoc-and-source
+            sonar-project-key: oberon-oss-picocli-option-help
             sonar-quality-gate-blocking: true
         secrets:
             CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}

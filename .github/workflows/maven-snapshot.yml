@@ -23,7 +23,7 @@ jobs:
             sonar-maven-profile: coverage
             sonar-quality-gate-blocking: false
             snapshot-maven-profiles: generate-javadoc-and-source
-            sonar-project-key: eu.oberon-oss:picocli-option-help
+            sonar-project-key: oberon-oss-picocli-option-help
         secrets:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
