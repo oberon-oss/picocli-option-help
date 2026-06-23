@@ -7,8 +7,7 @@ on:
 
 jobs:
     release:
-        # v1.1
-        uses: oberon-oss/github-workflows/.github/workflows/maven-release.yml@943f8beb2855a375762871682fdbbe5095c62409
+        uses: oberon-oss/github-workflows/.github/workflows/maven-release.yml@943f8beb2855a375762871682fdbbe5095c62409 # v1.5
         with:
             java-version: '25'
             release-maven-profiles: central-release,generate-javadoc-and-source
