@@ -6,7 +6,6 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=oberon-oss_picocli-option-help&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=oberon-oss_picocli-option-help)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=oberon-oss_picocli-option-help&metric=bugs)](https://sonarcloud.io/summary/new_code?id=oberon-oss_picocli-option-help)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=oberon-oss_picocli-option-help&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=oberon-oss_picocli-option-help)
-[![MvnRepository](https://badges.mvnrepository.com/badge/eu.oberon-oss/picocli-option-help/badge.svg?label=MvnRepository)](https://mvnrepository.com/artifact/eu.oberon-oss/picocli-option-help)
 
 
 Picocli Option Help is a Java library designed to enhance [picocli](https://picocli.info/) by providing detailed listings of valid values for command-line options. It allows developers to specify custom providers for option values and descriptions, which are then rendered as part of the command's usage help.
@@ -28,15 +27,8 @@ Picocli Option Help is a Java library designed to enhance [picocli](https://pico
 
 ## Setup
 
-Add the library to your Maven project:
-
-```xml
-<dependency>
-    <groupId>eu.oberon-oss</groupId>
-    <artifactId>picocli-option-help</artifactId>
-    <version>[required-version-goes-here]</version>
-</dependency>
-```
+Add the library to your Maven project: 
+[![MvnRepository](https://badges.mvnrepository.com/badge/eu.oberon-oss/picocli-option-help/badge.svg?label=MvnRepository)](https://mvnrepository.com/artifact/eu.oberon-oss/picocli-option-help)
 
 ## Usage
 
